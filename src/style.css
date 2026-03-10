@@ -49,7 +49,7 @@ body {
   background-repeat: no-repeat;
   transition: background-image 0.5s ease-in-out;
   /* 預設載入教堂背景 */
-  background-image: url('/assets/wedding_church_bg_1773119380226.png');
+  background-color: #000;
 }
 
 /* 角色層 */

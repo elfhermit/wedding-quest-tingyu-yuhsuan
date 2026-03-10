@@ -37,11 +37,12 @@ const continuePrompt = document.getElementById('continue-prompt')!;
 const startScreen = document.getElementById('start-screen')!;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
 
-// Asset paths
-const BACKGROUND_CHURCH = '/assets/wedding_church_bg_1773119380226.png';
-const BACKGROUND_BANQUET = '/assets/wedding_banquet_bg_1773119396765.png'; // 預留場景切換
-const SPRITE_TINGYU = '/assets/sprite_tingyu_1773121325160.png';
-const SPRITE_YUHSUAN = '/assets/sprite_yuhsuan_1773121309349.png';
+// Asset paths from public directory mapped dynamically by Vite
+const BASE_URL = import.meta.env.BASE_URL;
+const BACKGROUND_CHURCH = BASE_URL + 'assets/wedding_church_bg_1773119380226.png';
+const BACKGROUND_BANQUET = BASE_URL + 'assets/wedding_banquet_bg_1773119396765.png'; // 預留場景切換
+const SPRITE_TINGYU = BASE_URL + 'assets/sprite_tingyu_1773121325160.png';
+const SPRITE_YUHSUAN = BASE_URL + 'assets/sprite_yuhsuan_1773121309349.png';
 
 let currentLineIndex = 0;
 let isTyping = false;
