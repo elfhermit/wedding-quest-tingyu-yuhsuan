@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+TC:wght@400;500;700&display=swap');
 
 :root {
-  --font-family: 'DotGothic16', sans-serif;
+  --font-pixel: 'DotGothic16', sans-serif;
+  --font-text: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
   --bg-color: #f0f0f0;
-  --dialogue-bg: #1c3d99;
-  /* 參考圖片的深藍色 */
-  --dialogue-border: #ffffff;
 }
 
 * {
@@ -15,7 +13,7 @@
 }
 
 body {
-  font-family: var(--font-family);
+  font-family: var(--font-text);
   background-color: var(--bg-color);
   color: white;
   display: flex;
@@ -76,6 +74,7 @@ body {
   /* 像素風陰影 */
   image-rendering: pixelated;
   /* 確保像素不模糊 */
+  transform-origin: bottom center;
 }
 
 /* 非發言角色稍微變暗變小 */
@@ -85,53 +84,70 @@ body {
   z-index: 1;
 }
 
+@keyframes breathe {
+  0% {
+    transform: scale(1.05) translateY(0);
+  }
+
+  100% {
+    transform: scale(1.05) translateY(-6px);
+  }
+}
+
 .character.active {
   filter: brightness(1) drop-shadow(0px 4px 0px rgba(0, 0, 0, 0.3));
-  transform: scale(1.05);
+  animation: breathe 2s infinite alternate ease-in-out;
   z-index: 2;
 }
 
 /* 對話框層 */
 .dialogue-wrapper {
   position: absolute;
-  bottom: 5%;
-  left: 5%;
-  width: 90%;
-  height: 25%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 10;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 5% 5% 8% 5%;
 }
 
 .dialogue-box {
   width: 100%;
-  height: 100%;
-  background-color: var(--dialogue-bg);
-  border: 4px solid var(--dialogue-border);
-  border-radius: 4px;
+  height: 25%;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
   padding: 16px;
   position: relative;
-  box-shadow: inset 0 0 0 2px #000, 0 4px 0 rgba(0, 0, 0, 0.3);
-  /* 復古雙層邊框效果 */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   display: flex;
   flex-direction: column;
 }
 
 .speaker-name {
+  font-family: var(--font-pixel);
   font-size: 1.2rem;
   color: #ffd700;
-  /* 給講者名字一個醒目的黃色 */
   margin-bottom: 8px;
-  text-shadow: 1px 1px 0 #000;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
 }
 
 .dialogue-text {
-  font-size: 1.2rem;
+  font-family: var(--font-text);
+  font-size: 1.1rem;
   line-height: 1.6;
+  color: #F8FAFC;
   flex-grow: 1;
-  text-shadow: 1px 1px 0 #000;
+  text-shadow: none;
+  transition: opacity 0.2s ease-in-out;
 }
 
-/* 點擊繼續提示（閃爍的心型） */
+/* 點擊繼續提示（上下浮動的心型） */
 .continue-prompt {
   position: absolute;
   bottom: 12px;
@@ -139,9 +155,10 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--font-text);
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.8);
-  animation: pulse 1s infinite;
+  animation: floatPrompt 1.5s infinite alternate ease-in-out;
 }
 
 .heart-icon {
@@ -154,16 +171,14 @@ body {
   -webkit-mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 9 8" xmlns="http://www.w3.org/2000/svg"><path d="M1 2V3H0V5H1V6H2V7H4V8H5V7H7V6H8V5H9V3H8V2H7V1H6V0H4V1H3V0H1V2Z"/></svg>') no-repeat center / contain;
 }
 
-@keyframes pulse {
+@keyframes floatPrompt {
   0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.3;
+    transform: translateY(0);
+    opacity: 0.8;
   }
 
   100% {
+    transform: translateY(-4px);
     opacity: 1;
   }
 }
@@ -181,19 +196,22 @@ body {
 }
 
 .start-btn {
-  background-color: var(--dialogue-bg);
+  background-color: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: white;
-  font-family: inherit;
+  font-family: var(--font-pixel);
   font-size: 1.5rem;
   padding: 12px 24px;
-  border: 4px solid white;
-  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: inset 0 0 0 2px #000, 0 4px 0 #000;
-  text-shadow: 1px 1px 0 #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+  transition: all 0.2s ease;
 }
 
 .start-btn:active {
-  transform: translateY(4px);
-  box-shadow: inset 0 0 0 2px #000, 0 0px 0 #000;
+  transform: translateY(2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }

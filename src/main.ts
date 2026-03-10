@@ -131,6 +131,7 @@ function startTyping() {
   isTyping = true;
   continuePrompt.style.display = 'none';
   dialogueText.textContent = '';
+  dialogueText.style.opacity = '1';
   let charIdx = 0;
 
   if (typeInterval) clearInterval(typeInterval);
@@ -158,8 +159,11 @@ dialogueBox.addEventListener('click', () => {
     // Skip typing and show full text immediately
     finishTyping();
   } else {
-    // Next line
-    nextLine();
+    // Fade out text first
+    dialogueText.style.opacity = '0';
+    setTimeout(() => {
+      nextLine();
+    }, 200); // Match the CSS transition duration
   }
 });
 
