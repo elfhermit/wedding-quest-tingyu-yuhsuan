@@ -1,0 +1,100 @@
+[
+    {
+        "id": 1,
+        "speaker": "學姐",
+        "text": "哈囉！終於等到這一天啦！",
+        "emotion": "happy",
+        "bgm": "normal"
+    },
+    {
+        "id": 2,
+        "speaker": "學長",
+        "text": "沒想到當年那個還在熬夜趕專案的學妹，現在要步入禮堂了。",
+        "emotion": "smile",
+        "bgm": "none"
+    },
+    {
+        "id": 3,
+        "speaker": "玩家",
+        "text": "學長學姐！你們怎麼會在這裡出現？",
+        "emotion": "surprise",
+        "bgm": "none"
+    },
+    {
+        "id": 4,
+        "speaker": "學姐",
+        "text": "當然是作為隱藏 NPC 來發放破關獎勵的呀！",
+        "emotion": "laugh",
+        "bgm": "none"
+    },
+    {
+        "id": 5,
+        "speaker": "學長",
+        "text": "不過在拿獎勵之前，總得先回顧一下妳的新手村時期吧？",
+        "emotion": "smug",
+        "bgm": "none"
+    },
+    {
+        "id": 6,
+        "speaker": "學姐",
+        "text": "還記得那時候妳為了 debug，在實驗室吃了一個禮拜的泡麵...",
+        "emotion": "smile",
+        "bgm": "memory"
+    },
+    {
+        "id": 7,
+        "speaker": "學長",
+        "text": "然後還把伺服器給用掛了，哈哈哈！",
+        "emotion": "laugh",
+        "bgm": "none"
+    },
+    {
+        "id": 8,
+        "speaker": "玩家",
+        "text": "這...這種黑歷史就別提了吧！",
+        "emotion": "sweat",
+        "bgm": "none"
+    },
+    {
+        "id": 9,
+        "speaker": "學姐",
+        "text": "好啦不鬧妳了。看到妳穿上婚紗的樣子，真的很替妳開心。",
+        "emotion": "happy",
+        "bgm": "none"
+    },
+    {
+        "id": 10,
+        "speaker": "學長",
+        "text": "接下來的『婚姻』副本難度可是很高的喔，準備好了嗎？",
+        "emotion": "smile",
+        "bgm": "none"
+    },
+    {
+        "id": 11,
+        "speaker": "玩家",
+        "text": "嗯，我裝備已經升到滿等了，沒問題的！",
+        "emotion": "smile",
+        "bgm": "none"
+    },
+    {
+        "id": 12,
+        "speaker": "學姐",
+        "text": "太棒了！恭喜妳，主線任務【步入禮堂】正式達成！",
+        "emotion": "happy",
+        "bgm": "victory"
+    },
+    {
+        "id": 13,
+        "speaker": "學長",
+        "text": "祝妳新婚快樂，永遠幸福喔！",
+        "emotion": "happy",
+        "bgm": "none"
+    },
+    {
+        "id": 14,
+        "speaker": "學姐",
+        "text": "要一直閃瞎我們的眼睛喔！點擊領取妳的專屬破關獎勵吧！",
+        "emotion": "wink",
+        "bgm": "none"
+    }
+]
