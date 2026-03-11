@@ -22,7 +22,7 @@ app.innerHTML = `
       </div>
     </div>
     <div class="start-screen" id="start-screen">
-      <h1 style="font-family: var(--font-pixel); color: #ffd700; margin-bottom: 30px; text-shadow: 3px 3px 0 #000;">Wedding Quest V2</h1>
+      <h1 style="font-family: var(--font-pixel); color: #ffd700; margin-bottom: 30px; text-shadow: 3px 3px 0 #000;">Wedding Quest</h1>
       <p style="color: white; margin-bottom: 30px; font-family: var(--font-text);">～ 庭宇 ❤ 禹媗的婚禮特輯 ～</p>
       <button class="start-btn" id="start-btn">載入記憶中...</button>
     </div>
@@ -79,7 +79,7 @@ startBtn.addEventListener('click', () => {
 
 function triggerFlash(callback: () => void) {
   flashEffect.classList.remove('flash-active');
-  void flashEffect.offsetWidth; 
+  void flashEffect.offsetWidth;
   flashEffect.classList.add('flash-active');
   setTimeout(callback, 400); // Trigger mid-flash
 }
@@ -97,7 +97,7 @@ function nextLine() {
   }
 
   const line = scriptData[currentLineIndex];
-  
+
   // Transition logic: Wedding server login
   if (line.text.includes("名為『婚姻』的全新伺服器")) {
     triggerFlash(() => {
