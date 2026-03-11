@@ -1,100 +1,13 @@
 [
-    {
-        "id": 1,
-        "speaker": "學姐",
-        "text": "哈囉！終於等到這一天啦！",
-        "emotion": "happy",
-        "bgm": "normal"
-    },
-    {
-        "id": 2,
-        "speaker": "學長",
-        "text": "沒想到當年那個還在熬夜趕專案的學妹，現在要步入禮堂了。",
-        "emotion": "smile",
-        "bgm": "none"
-    },
-    {
-        "id": 3,
-        "speaker": "玩家",
-        "text": "學長學姐！你們怎麼會在這裡出現？",
-        "emotion": "surprise",
-        "bgm": "none"
-    },
-    {
-        "id": 4,
-        "speaker": "學姐",
-        "text": "當然是作為隱藏 NPC 來發放破關獎勵的呀！",
-        "emotion": "laugh",
-        "bgm": "none"
-    },
-    {
-        "id": 5,
-        "speaker": "學長",
-        "text": "不過在拿獎勵之前，總得先回顧一下妳的新手村時期吧？",
-        "emotion": "smug",
-        "bgm": "none"
-    },
-    {
-        "id": 6,
-        "speaker": "學姐",
-        "text": "還記得那時候妳為了 debug，在實驗室吃了一個禮拜的泡麵...",
-        "emotion": "smile",
-        "bgm": "memory"
-    },
-    {
-        "id": 7,
-        "speaker": "學長",
-        "text": "然後還把伺服器給用掛了，哈哈哈！",
-        "emotion": "laugh",
-        "bgm": "none"
-    },
-    {
-        "id": 8,
-        "speaker": "玩家",
-        "text": "這...這種黑歷史就別提了吧！",
-        "emotion": "sweat",
-        "bgm": "none"
-    },
-    {
-        "id": 9,
-        "speaker": "學姐",
-        "text": "好啦不鬧妳了。看到妳穿上婚紗的樣子，真的很替妳開心。",
-        "emotion": "happy",
-        "bgm": "none"
-    },
-    {
-        "id": 10,
-        "speaker": "學長",
-        "text": "接下來的『婚姻』副本難度可是很高的喔，準備好了嗎？",
-        "emotion": "smile",
-        "bgm": "none"
-    },
-    {
-        "id": 11,
-        "speaker": "玩家",
-        "text": "嗯，我裝備已經升到滿等了，沒問題的！",
-        "emotion": "smile",
-        "bgm": "none"
-    },
-    {
-        "id": 12,
-        "speaker": "學姐",
-        "text": "太棒了！恭喜妳，主線任務【步入禮堂】正式達成！",
-        "emotion": "happy",
-        "bgm": "victory"
-    },
-    {
-        "id": 13,
-        "speaker": "學長",
-        "text": "祝妳新婚快樂，永遠幸福喔！",
-        "emotion": "happy",
-        "bgm": "none"
-    },
-    {
-        "id": 14,
-        "speaker": "學姐",
-        "text": "要一直閃瞎我們的眼睛喔！點擊領取妳的專屬破關獎勵吧！",
-        "emotion": "wink",
-        "bgm": "none"
-    }
-]
+  { "speaker": "社長", "text": "系統提示：野生的小學妹出現了！等等，她今天怎麼穿著婚紗裝備？！", "emotion": "surprised", "bgm": "town" },
+  { "speaker": "學姐", "text": "時間過得真快呀！想當年妳才大一，就加入了我們的『志工公會』。", "emotion": "smile", "bgm": "town" },
+  { "speaker": "社長", "text": "還記得我們每週四晚上的『四書五經』副本嗎？帶著一群小新手跟村民一起詠唱古老魔法陣。", "emotion": "nostalgic", "bgm": "town" },
+  { "speaker": "學姐", "text": "還有每學期的『海線淨灘遠征』！學長姐當坐騎載我們到永安和南寮漁港，大家一起騎著腳踏車、瘋狂清理海灘上的史萊姆（垃圾）。", "emotion": "laugh", "bgm": "town" },
+  { "speaker": "社長", "text": "打完副本最期待的，就是回到公會小屋一起開伙煮飯，那是我們專屬的 HP 回復時光啊。", "emotion": "happy", "bgm": "town" },
+  { "speaker": "學姐", "text": "說真的，一直都很佩服妳。明明是音樂系，還雙修教育學程，簡直是『吟遊詩人』加『學者』的超強雙職業！", "emotion": "proud", "bgm": "town" },
+  { "speaker": "社長", "text": "對啊！課業那麼忙，還能扛起活動長重任，完美指揮那場超大型的『寶可夢跨校迎新 Raid』，點子簡集像湧泉一樣多。", "emotion": "excited", "bgm": "town" },
+  { "speaker": "學姐", "text": "而且只要公會有難，妳總是義不容辭，第一時間使用『傳送卷軸』回來幫忙。", "emotion": "touched", "bgm": "town" },
+  { "speaker": "社長", "text": "當年那個忙碌又充滿活力的學妹，現在終於要登入名為『婚姻』的全新伺服器了。", "emotion": "smile", "bgm": "town" },
+  { "speaker": "學姐", "text": "我們這兩個數學系與教育系的老戰友，會在這邊一直為妳施放祝福 Buff 的！", "emotion": "happy", "bgm": "town" },
+  { "speaker": "系統", "text": "✨ 主線任務【執子之手】解鎖！願妳的全新旅程，如同最美妙的樂章，永遠幸福快樂！ ✨", "emotion": "celebration", "bgm": "wedding" }
+]
