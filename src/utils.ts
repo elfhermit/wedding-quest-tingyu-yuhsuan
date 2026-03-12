@@ -17,14 +17,15 @@ export async function createTransparentSprite(imageUrl: string, tolerance: numbe
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data;
 
-            // 尋找背景的綠色 (通常是 #00FF00，也就是 0, 255, 0)
+            // 尋找背景的白色 (通常是 #FFFFFF，也就是 255, 255, 255)
             for (let i = 0; i < data.length; i += 4) {
                 const r = data[i];
                 const g = data[i + 1];
                 const b = data[i + 2];
 
-                // 如果該像素偏向亮綠色，則設定 Alpha 為 0 (透明)
-                if (r < tolerance && g > 255 - tolerance && b < tolerance) {
+                // 如果該像素偏向亮白色，則設定 Alpha 為 0 (透明)
+                // 擴大 tolerance 來處理些微不純白色的像素邊緣
+                if (r > 255 - tolerance && g > 255 - tolerance && b > 255 - tolerance) {
                     data[i + 3] = 0;
                 }
             }
