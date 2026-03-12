@@ -41,10 +41,10 @@ const startScreen = document.getElementById('start-screen')!;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
 
 const BASE_URL = import.meta.env.BASE_URL;
-const BG_SUNSET = BASE_URL + 'assets/sunset_beach_pixel_bg.png';
-const BG_CHURCH = BASE_URL + 'assets/wedding_church_bg_1773119380226.png';
-const SPRITE_PRESIDENT = BASE_URL + 'assets/sprite_senior_m_1773120018866.png'; // President (Math Magician)
-const SPRITE_SENIOR = BASE_URL + 'assets/sprite_senior_f_1773120035109.png'; // Senior (Education Healer)
+const BG_SUNSET = BASE_URL + 'assets/bg_memory_1773305969266.png';
+const BG_CHURCH = BASE_URL + 'assets/bg_wedding_1773305997077.png';
+const SPRITE_PRESIDENT = BASE_URL + 'assets/wizard_president_1773305885231.png'; // President (Math Magician)
+const SPRITE_SENIOR = BASE_URL + 'assets/priest_senior_1773305906885.png'; // Senior (Education Healer)
 
 let currentLineIndex = 0;
 let isTyping = false;
@@ -99,7 +99,7 @@ function nextLine() {
   const line = scriptData[currentLineIndex];
 
   // Transition logic: Wedding server login
-  if (line.text.includes("名為『婚姻』的全新伺服器")) {
+  if (line.background === 'wedding' && !gameContainer.style.backgroundImage.includes('bg_wedding')) {
     triggerFlash(() => {
       gameContainer.style.backgroundImage = `url('${BG_CHURCH}')`;
       playVictorySound();

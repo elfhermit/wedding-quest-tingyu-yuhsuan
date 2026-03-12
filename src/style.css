@@ -46,6 +46,7 @@ body {
   background-repeat: no-repeat;
   transition: background-image 1s ease-in-out;
   background-color: #000;
+  image-rendering: pixelated; /* 加入像素化渲染 */
 }
 
 /* 角色層 */
