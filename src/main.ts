@@ -13,6 +13,9 @@ app.innerHTML = `
       <img id="char-right" class="character inactive" src="" style="display: none;" />
     </div>
     <div class="dialogue-wrapper" id="dialogue-box" style="display: none;">
+      <div id="prop-container" class="prop-container" style="display: none;">
+        <img id="prop-icon" class="prop-icon" src="" />
+      </div>
       <div class="dialogue-box">
         <div class="speaker-name" id="speaker-name"></div>
         <div class="dialogue-text" id="dialogue-text"></div>
@@ -39,10 +42,13 @@ const dialogueText = document.getElementById('dialogue-text')!;
 const continuePrompt = document.getElementById('continue-prompt')!;
 const startScreen = document.getElementById('start-screen')!;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
+const propContainer = document.getElementById('prop-container')!;
+const propIcon = document.getElementById('prop-icon') as HTMLImageElement;
 
 const BASE_URL = import.meta.env.BASE_URL;
 const BG_SUNSET = BASE_URL + 'assets/bg_memory_1773305969266.png';
 const BG_CHURCH = BASE_URL + 'assets/bg_wedding_1773305997077.png';
+const BG_GUILD = BASE_URL + 'assets/bg_guild_house_1773307462064.png';
 const SPRITE_PRESIDENT = BASE_URL + 'assets/wizard_president_1773305885231.png'; // President (Math Magician)
 const SPRITE_SENIOR = BASE_URL + 'assets/priest_senior_1773305906885.png'; // Senior (Education Healer)
 
@@ -96,13 +102,17 @@ function nextLine() {
     return;
   }
 
-  const line = scriptData[currentLineIndex];
+  const line = scriptData[currentLineIndex] as any;
 
-  // Transition logic: Wedding server login
+  // Background Transition Logic
   if (line.background === 'wedding' && !gameContainer.style.backgroundImage.includes('bg_wedding')) {
     triggerFlash(() => {
       gameContainer.style.backgroundImage = `url('${BG_CHURCH}')`;
       playVictorySound();
+    });
+  } else if (line.background === 'guild_house' && !gameContainer.style.backgroundImage.includes('bg_guild')) {
+    triggerFlash(() => {
+      gameContainer.style.backgroundImage = `url('${BG_GUILD}')`;
     });
   }
 
@@ -113,15 +123,27 @@ function nextLine() {
   charLeft.style.display = 'block';
   charRight.style.display = 'block';
 
-  if (line.speaker === '社長') {
+  if (line.speaker === '學長') {
     charLeft.className = 'character active';
     charRight.className = 'character inactive';
-  } else if (line.speaker === '學姐') {
+  } else if (line.speaker === '學姊') {
     charLeft.className = 'character inactive';
     charRight.className = 'character active';
   } else {
     charLeft.className = 'character inactive';
     charRight.className = 'character inactive';
+  }
+
+  // Prop Logic
+  if (line.propIcon) {
+    propContainer.style.display = 'block';
+    // removing class to reset animation
+    propIcon.classList.remove('prop-bounce');
+    void propIcon.offsetWidth; // trigger reflow
+    propIcon.src = BASE_URL + 'assets/' + line.propIcon;
+    propIcon.classList.add('prop-bounce');
+  } else {
+    propContainer.style.display = 'none';
   }
 
   startTyping();
