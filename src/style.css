@@ -49,23 +49,21 @@ body {
   image-rendering: pixelated; /* 加入像素化渲染 */
 }
 
-/* 角色層 */
+/* 角色層 - 三人佈局 */
 .characters-layer {
   position: absolute;
   bottom: 25%;
   left: 0;
   width: 100%;
-  height: 55%;
+  height: 60%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-end;
   pointer-events: none;
-  gap: -10px;
+  padding: 0 2px;
 }
 
 .character {
-  width: 55%;
-  max-height: 100%;
   object-fit: contain;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   filter: drop-shadow(0px 6px 0px rgba(0, 0, 0, 0.4));
@@ -74,9 +72,34 @@ body {
   position: relative;
 }
 
+/* 學長（左）：稍小，靠左 */
+.char-left {
+  width: 36%;
+  max-height: 90%;
+  align-self: flex-end;
+  margin-left: -8px;
+}
+
+/* 學妹（中）：最大，佔主視覺 */
+.char-center {
+  width: 42%;
+  max-height: 100%;
+  align-self: flex-end;
+  z-index: 3;
+  flex-shrink: 0;
+}
+
+/* 學姊（右）：稍小，靠右 */
+.char-right {
+  width: 36%;
+  max-height: 90%;
+  align-self: flex-end;
+  margin-right: -8px;
+}
+
 .character.inactive {
-  filter: brightness(0.5) grayscale(0.2) drop-shadow(0px 4px 0px rgba(0, 0, 0, 0.3));
-  transform: scale(0.9);
+  filter: brightness(0.45) grayscale(0.3) drop-shadow(0px 4px 0px rgba(0, 0, 0, 0.3));
+  transform: scale(0.88);
   z-index: 1;
 }
 
@@ -88,7 +111,18 @@ body {
 .character.active {
   filter: brightness(1.1) drop-shadow(0px 8px 0px rgba(0, 0, 0, 0.4));
   animation: breathe 2.5s infinite alternate ease-in-out;
-  z-index: 2;
+  z-index: 4;
+}
+
+/* 學妹婚紗換裝光暈特效 */
+@keyframes juniorGlow {
+  0%   { filter: brightness(1.1) drop-shadow(0 0 8px rgba(255, 230, 250, 0.8)); }
+  50%  { filter: brightness(1.3) drop-shadow(0 0 20px rgba(255, 200, 240, 1)); }
+  100% { filter: brightness(1.1) drop-shadow(0 0 8px rgba(255, 230, 250, 0.8)); }
+}
+
+.junior-glow {
+  animation: juniorGlow 2s infinite ease-in-out !important;
 }
 
 /* 對話框層 - 擴展為全螢幕點擊區 */
