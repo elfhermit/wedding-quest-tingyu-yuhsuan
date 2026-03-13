@@ -1,6 +1,5 @@
 import './style.css';
 import scriptData from './data/script.json';
-import { createTransparentSprite } from './utils';
 import { playTypingSound, playVictorySound } from './audio';
 import confetti from 'canvas-confetti';
 
@@ -56,17 +55,12 @@ let currentLineIndex = 0;
 let isTyping = false;
 let typeInterval: ReturnType<typeof setInterval> | null = null;
 let currentFullText = '';
-let transPresident: string;
-let transSenior: string;
 
 async function init() {
   startBtn.disabled = true;
   try {
-    transPresident = await createTransparentSprite(SPRITE_PRESIDENT);
-    transSenior = await createTransparentSprite(SPRITE_SENIOR);
-
-    charLeft.src = transPresident;
-    charRight.src = transSenior;
+    charLeft.src = SPRITE_PRESIDENT;
+    charRight.src = SPRITE_SENIOR;
 
     startBtn.textContent = '展開回憶';
     startBtn.disabled = false;
