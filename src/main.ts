@@ -47,7 +47,7 @@ const propIcon = document.getElementById('prop-icon') as HTMLImageElement;
 const BASE_URL = import.meta.env.BASE_URL;
 const BG_SUNSET = BASE_URL + 'assets/bg_memory_1773305969266.png';
 const BG_CHURCH = BASE_URL + 'assets/bg_wedding_1773305997077.png';
-const BG_GUILD = BASE_URL + 'assets/bg_guild_house_1773307462064.png';
+const BG_GUILD = BASE_URL + 'assets/bg_guild_house_new.png';
 const SPRITE_PRESIDENT = BASE_URL + 'assets/wizard_president_1773305885231.png'; // President (Math Magician)
 const SPRITE_SENIOR = BASE_URL + 'assets/priest_senior_1773305906885.png'; // Senior (Education Healer)
 
