@@ -11,12 +11,99 @@
   <meta property="og:type" content="website" />
   <meta property="og:image"
     content="https://twilight-aldrin-demo.vercel.app/assets/wedding_church_bg_1773119380226.png" />
-  <script type="module" crossorigin src="/wedding-quest-tingyu-yuhsuan/assets/index-LMimHWYU.js"></script>
-  <link rel="stylesheet" crossorigin href="/wedding-quest-tingyu-yuhsuan/assets/index-CqQCPpHn.css">
+  <script type="module" crossorigin src="./assets/index-wcF52K0d.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Cigswe9L.css">
 </head>
 
 <body>
   <div id="app"></div>
+  <div id="game-container" class="game-container">
+    <div class="flash-effect" id="flash-effect"></div>
+    <div class="petals-container" id="petals-container"></div>
+    
+    <!-- 狀態列 (Phase 3) -->
+    <div class="status-bar" id="status-bar" style="display: none;">
+      <div class="memory-label">MEMORY</div>
+      <div class="memory-bar-bg">
+        <div class="memory-bar-fill" id="memory-fill"></div>
+      </div>
+      <button class="log-btn" id="log-btn">LOG</button>
+    </div>
+
+    <!-- 回憶大圖容器 (Phase 4) -->
+    <div id="memory-view" class="memory-view" style="display: none;">
+      <img id="memory-img" src="" alt="Memory Photo" />
+    </div>
+
+    <div class="characters-layer">
+      <img id="char-left" class="character char-left inactive" src="" style="display: none;" />
+      <img id="char-center" class="character char-center inactive" src="" style="display: none;" />
+      <img id="char-right" class="character char-right inactive" src="" style="display: none;" />
+    </div>
+
+    <div class="dialogue-wrapper" id="dialogue-box" style="display: none;">
+      <div id="prop-container" class="prop-container" style="display: none;">
+        <img id="prop-icon" class="prop-icon" src="" />
+      </div>
+      <div class="dialogue-box">
+        <div class="speaker-name" id="speaker-name"></div>
+        <div class="dialogue-text" id="dialogue-text"></div>
+        <div class="continue-prompt" id="continue-prompt" style="display: none;">
+          (點擊繼續) <div class="heart-icon"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 開場畫面 (Phase 3 增強) -->
+    <div class="start-screen" id="start-screen">
+      <div class="title-container">
+        <h1 class="game-title">Wedding Quest</h1>
+        <div class="title-glow"></div>
+      </div>
+      <p class="game-subtitle">～ 庭宇 ❤ 禹媗的婚禮特輯 ～</p>
+      
+      <div id="loading-container" class="loading-container">
+        <div class="loading-bar-bg">
+          <div id="loading-fill" class="loading-bar-fill"></div>
+        </div>
+        <div id="loading-text" class="loading-text">正在對齊時空座標...</div>
+      </div>
+      
+      <button class="start-btn" id="start-btn" style="display: none;">展開回憶</button>
+    </div>
+
+    <!-- Log 遮罩層 (Phase 4) -->
+    <div id="log-overlay" class="log-overlay" style="display: none;">
+      <div class="log-panel">
+        <div class="log-header">
+          <span>對話回顧 (ADV LOG)</span>
+          <button id="close-log" class="close-log-btn">×</button>
+        </div>
+        <div id="log-content" class="log-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="end-screen" class="end-screen" style="display: none;">
+    <div class="end-card">
+      <div class="end-image-container">
+        <img id="end-char" src="" alt="Wedding Bride" />
+        <div class="shine-effect"></div>
+      </div>
+      <div class="end-content">
+        <h2 class="end-title">任務達成：執子之手</h2>
+        <p class="end-message">願妳的全新旅程，如同最美妙的樂章，永遠幸福快樂！</p>
+        <div class="end-meta">
+          <span class="end-date">2026.03.28</span>
+          <span class="end-signature">學長姊的全體祝福</span>
+        </div>
+        <div class="end-actions">
+          <button id="share-btn" class="pixel-btn share-btn">分享喜悅</button>
+          <button id="restart-btn" class="pixel-btn restart-btn">重溫回憶</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
