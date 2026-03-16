@@ -1,37 +1,9 @@
 import './style.css';
 import scriptData from './data/script.json';
-import { playTypingSound, playVictorySound } from './audio';
+import { playTypingSound, playVictorySound, playBGM, stopBGM } from './audio';
 import confetti from 'canvas-confetti';
 
-const app = document.querySelector<HTMLDivElement>('#app')!;
-app.innerHTML = `
-  <div class="game-container" id="game-container">
-    <div class="flash-effect" id="flash-effect"></div>
-    <div class="characters-layer">
-      <img id="char-left" class="character char-left inactive" src="" style="display: none;" />
-      <img id="char-center" class="character char-center inactive" src="" style="display: none;" />
-      <img id="char-right" class="character char-right inactive" src="" style="display: none;" />
-    </div>
-    <div class="dialogue-wrapper" id="dialogue-box" style="display: none;">
-      <div id="prop-container" class="prop-container" style="display: none;">
-        <img id="prop-icon" class="prop-icon" src="" />
-      </div>
-      <div class="dialogue-box">
-        <div class="speaker-name" id="speaker-name"></div>
-        <div class="dialogue-text" id="dialogue-text"></div>
-        <div class="continue-prompt" id="continue-prompt" style="display: none;">
-          (點擊繼續) <div class="heart-icon"></div>
-        </div>
-      </div>
-    </div>
-    <div class="start-screen" id="start-screen">
-      <h1 style="font-family: var(--font-pixel); color: #ffd700; margin-bottom: 30px; text-shadow: 3px 3px 0 #000;">Wedding Quest</h1>
-      <p style="color: white; margin-bottom: 30px; font-family: var(--font-text);">～ 庭宇 ❤ 禹媗的婚禮特輯 ～</p>
-      <button class="start-btn" id="start-btn">載入記憶中...</button>
-    </div>
-  </div>
-`;
-
+// --- DOM 元素獲取 ---
 const gameContainer = document.getElementById('game-container')!;
 const flashEffect = document.getElementById('flash-effect')!;
 const charLeft = document.getElementById('char-left') as HTMLImageElement;
@@ -43,47 +15,180 @@ const dialogueText = document.getElementById('dialogue-text')!;
 const continuePrompt = document.getElementById('continue-prompt')!;
 const startScreen = document.getElementById('start-screen')!;
 const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
+const loadingFill = document.getElementById('loading-fill')!;
+const loadingText = document.getElementById('loading-text')!;
 const propContainer = document.getElementById('prop-container')!;
 const propIcon = document.getElementById('prop-icon') as HTMLImageElement;
+const petalsContainer = document.getElementById('petals-container')!;
+const statusBar = document.getElementById('status-bar')!;
+const memoryFill = document.getElementById('memory-fill')!;
+const logBtn = document.getElementById('log-btn')!;
+const logOverlay = document.getElementById('log-overlay')!;
+const logContent = document.getElementById('log-content')!;
+const closeLogBtn = document.getElementById('close-log')!;
+const memoryView = document.getElementById('memory-view')!;
+const memoryImg = document.getElementById('memory-img') as HTMLImageElement;
 
-const BASE_URL = import.meta.env.BASE_URL;
+// 結局相關元件
+const endScreen = document.getElementById('end-screen')!;
+const endChar = document.getElementById('end-char') as HTMLImageElement;
+const shareBtn = document.getElementById('share-btn')!;
+const restartBtn = document.getElementById('restart-btn')!;
+
+// --- 資源路徑設定 ---
+const BASE_URL = import.meta.env.BASE_URL || './';
 const BG_SUNSET = BASE_URL + 'assets/bg_memory_1773305969266.png';
 const BG_CHURCH = BASE_URL + 'assets/bg_wedding_1773305997077.png';
 const BG_GUILD = BASE_URL + 'assets/bg_guild_house_new.png';
 
-// --- 角色素材路徑 ---
-const SPRITE_PRESIDENT = BASE_URL + 'assets/wizard_president_1773305885231.png';   // 學長（左）
-const SPRITE_SENIOR    = BASE_URL + 'assets/priest_senior_1773305906885.png';       // 學姊（右）
-const SPRITE_JUNIOR_CLUB    = BASE_URL + 'assets/junior_club_1773305925790.png';    // 學妹（社團服、中）
-const SPRITE_JUNIOR_WEDDING = BASE_URL + 'assets/junior_wedding_1773305949043.png'; // 學妹（婚紗）
+const SPRITE_PRESIDENT = BASE_URL + 'assets/wizard_president_1773305885231.png';
+const SPRITE_SENIOR    = BASE_URL + 'assets/priest_senior_1773305906885.png';
+const SPRITE_JUNIOR_CLUB    = BASE_URL + 'assets/junior_club_1773305925790.png';
+const SPRITE_JUNIOR_WEDDING = BASE_URL + 'assets/junior_wedding_1773305949043.png';
 
+// --- 遊戲狀態變數 ---
 let currentLineIndex = 0;
 let isTyping = false;
-let typeInterval: ReturnType<typeof setInterval> | null = null;
+let typeInterval: any = null;
 let currentFullText = '';
 let isWeddingScene = false;
+let petalInterval: any = null;
+const dialogueHistory: { speaker: string; text: string }[] = [];
 
+// --- 初始化與載入邏輯 ---
 async function init() {
-  startBtn.disabled = true;
-  try {
-    charLeft.src   = SPRITE_PRESIDENT;
-    charCenter.src = SPRITE_JUNIOR_CLUB;
-    charRight.src  = SPRITE_SENIOR;
+  const loadingMessages = [
+    '正在對齊時空座標...',
+    '提取社團活動記憶...',
+    '載入學長姊的祝福 Buff...',
+    '準備婚禮專屬特效...',
+    '一切就緒！'
+  ];
 
-    startBtn.textContent = '展開回憶';
-    startBtn.disabled = false;
-  } catch (err) {
-    console.error("Asset loading error:", err);
-    startBtn.textContent = '載入失敗';
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += Math.random() * 15;
+    if (progress > 100) progress = 100;
+    
+    loadingFill.style.width = `${progress}%`;
+    const msgIdx = Math.min(Math.floor((progress / 100) * loadingMessages.length), loadingMessages.length - 1);
+    loadingText.textContent = loadingMessages[msgIdx];
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      setTimeout(() => {
+        document.getElementById('loading-container')!.style.display = 'none';
+        startBtn.style.display = 'block';
+        startBtn.classList.add('fade-in');
+      }, 500);
+    }
+  }, 200);
+
+  charLeft.src   = SPRITE_PRESIDENT;
+  charCenter.src = SPRITE_JUNIOR_CLUB;
+  charRight.src  = SPRITE_SENIOR;
+}
+
+// --- 輔助函數 ---
+function updateMemoryBar() {
+  const percent = (currentLineIndex / (scriptData.length - 1)) * 100;
+  memoryFill.style.width = `${percent}%`;
+}
+
+function updateCharacterFocus(speaker: string) {
+  [charLeft, charCenter, charRight].forEach(c => {
+    c.style.display = 'block';
+    c.classList.remove('active');
+    c.classList.add('inactive');
+  });
+
+  if (speaker === '學長') {
+    charLeft.classList.remove('inactive');
+    charLeft.classList.add('active');
+  } else if (speaker === '學姊') {
+    charRight.classList.remove('inactive');
+    charRight.classList.add('active');
+  } else if (speaker === '系統') {
+    charCenter.classList.remove('inactive');
+    charCenter.classList.add('active');
   }
 }
 
-startBtn.addEventListener('click', () => {
-  startScreen.style.display = 'none';
-  dialogueBox.style.display = 'block';
-  gameContainer.style.backgroundImage = `url('${BG_SUNSET}')`;
-  nextLine();
-});
+function updateEmotion(speaker: string, emotion: string) {
+  const allEmotions = ['emo-surprised', 'emo-smile', 'emo-excited'];
+  [charLeft, charCenter, charRight].forEach(c => c.classList.remove(...allEmotions));
+
+  if (!emotion) return;
+
+  let targetChar: HTMLImageElement | null = null;
+  if (speaker === '學長') targetChar = charLeft;
+  else if (speaker === '學姊') targetChar = charRight;
+  else if (speaker === '系統') targetChar = charCenter;
+
+  if (targetChar) {
+    const emotionMap: Record<string, string> = {
+      'surprised': 'emo-surprised',
+      'smile': 'emo-smile',
+      'happy': 'emo-smile',
+      'excited': 'emo-excited',
+      'celebration': 'emo-excited'
+    };
+    const cssClass = emotionMap[emotion] || 'emo-smile';
+    targetChar.classList.add(cssClass);
+  }
+}
+
+function handleSceneTransition(line: any) {
+  const updateBackground = (newBg: string) => {
+    gameContainer.classList.add('fade-out');
+    setTimeout(() => {
+      gameContainer.style.backgroundImage = `url('${newBg}')`;
+      gameContainer.classList.remove('fade-out');
+      gameContainer.classList.add('fade-in');
+      setTimeout(() => gameContainer.classList.remove('fade-in'), 500);
+    }, 500);
+  };
+
+  if (line.background === 'wedding' && !isWeddingScene) {
+    isWeddingScene = true;
+    startPetals();
+    triggerFlash(() => {
+      gameContainer.style.backgroundImage = `url('${BG_CHURCH}')`;
+      playVictorySound();
+      charCenter.classList.add('junior-glow');
+      charCenter.src = SPRITE_JUNIOR_WEDDING;
+    });
+  } else if (line.background === 'guild_house' && !gameContainer.style.backgroundImage.includes('bg_guild')) {
+    updateBackground(BG_GUILD);
+  }
+
+  // 回憶大圖處理 (Phase 4)
+  if (line.memoryPhoto) {
+    showMemoryPhoto(BASE_URL + 'assets/' + line.memoryPhoto);
+  } else {
+    memoryView.style.display = 'none';
+  }
+}
+
+function showMemoryPhoto(src: string) {
+  memoryImg.src = src;
+  memoryView.style.display = 'flex';
+  memoryView.onclick = () => {
+    memoryView.style.display = 'none';
+  };
+}
+
+function handlePropDisplay(iconName: string) {
+  if (iconName) {
+    propContainer.style.display = 'block';
+    propIcon.classList.remove('prop-bounce');
+    void propIcon.offsetWidth;
+    propIcon.src = BASE_URL + 'assets/' + iconName;
+    propIcon.classList.add('prop-bounce');
+  } else {
+    propContainer.style.display = 'none';
+  }
+}
 
 function triggerFlash(callback: () => void) {
   flashEffect.classList.remove('flash-active');
@@ -94,68 +199,22 @@ function triggerFlash(callback: () => void) {
 
 function nextLine() {
   if (currentLineIndex >= scriptData.length) {
-    dialogueBox.style.display = 'none';
-    confetti({
-      particleCount: 200,
-      spread: 120,
-      origin: { y: 0.6 },
-      colors: ['#ffc0cb', '#ffd700', '#ffffff', '#87cefa']
-    });
+    showEnding();
     return;
   }
 
   const line = scriptData[currentLineIndex] as any;
+  dialogueHistory.push({ speaker: line.speaker, text: line.text });
+  updateMemoryBar();
 
-  // --- 背景切換邏輯 ---
-  if (line.background === 'wedding' && !isWeddingScene) {
-    isWeddingScene = true;
-    triggerFlash(() => {
-      gameContainer.style.backgroundImage = `url('${BG_CHURCH}')`;
-      playVictorySound();
-      // 學妹換裝為婚紗 ✨
-      charCenter.classList.add('junior-glow');
-      charCenter.src = SPRITE_JUNIOR_WEDDING;
-    });
-  } else if (line.background === 'guild_house' && !gameContainer.style.backgroundImage.includes('bg_guild')) {
-    triggerFlash(() => {
-      gameContainer.style.backgroundImage = `url('${BG_GUILD}')`;
-    });
-  }
+  if (line.bgm) playBGM(line.bgm);
+  handleSceneTransition(line);
+  updateEmotion(line.speaker, line.emotion);
 
   speakerName.textContent = line.speaker;
   currentFullText = line.text;
-
-  // --- 三角色顯示邏輯 ---
-  charLeft.style.display = 'block';
-  charCenter.style.display = 'block';
-  charRight.style.display = 'block';
-
-  // 重置所有角色為 inactive
-  charLeft.className   = 'character char-left inactive';
-  charCenter.className = 'character char-center inactive' + (charCenter.classList.contains('junior-glow') ? ' junior-glow' : '');
-  charRight.className  = 'character char-right inactive';
-
-  // 依說話者高亮對應角色
-  if (line.speaker === '學長') {
-    charLeft.className = 'character char-left active';
-  } else if (line.speaker === '學姊') {
-    charRight.className = 'character char-right active';
-  } else if (line.speaker === '系統') {
-    // 系統台詞：學妹（主角）置中高亮
-    charCenter.className = 'character char-center active' + (isWeddingScene ? ' junior-glow' : '');
-  }
-
-  // --- 道具顯示邏輯 ---
-  if (line.propIcon) {
-    propContainer.style.display = 'block';
-    propIcon.classList.remove('prop-bounce');
-    void propIcon.offsetWidth;
-    propIcon.src = BASE_URL + 'assets/' + line.propIcon;
-    propIcon.classList.add('prop-bounce');
-  } else {
-    propContainer.style.display = 'none';
-  }
-
+  updateCharacterFocus(line.speaker);
+  handlePropDisplay(line.propIcon);
   startTyping();
   currentLineIndex++;
 }
@@ -164,38 +223,102 @@ function startTyping() {
   isTyping = true;
   continuePrompt.style.display = 'none';
   dialogueText.textContent = '';
-  dialogueText.style.opacity = '1';
   let charIdx = 0;
 
-  if (typeInterval) clearInterval(typeInterval);
+  if (typeInterval) clearTimeout(typeInterval);
 
-  typeInterval = setInterval(() => {
-    dialogueText.textContent += currentFullText[charIdx];
-    playTypingSound();
-    charIdx++;
-    if (charIdx >= currentFullText.length) {
+  const type = () => {
+    if (charIdx < currentFullText.length) {
+      const char = currentFullText[charIdx];
+      dialogueText.textContent += char;
+      playTypingSound();
+      charIdx++;
+      let delay = 50;
+      if (['，', '。', '！', '？', '.', ',', '!', '?'].includes(char)) delay = 200;
+      typeInterval = setTimeout(type, delay);
+    } else {
       finishTyping();
     }
-  }, 50);
+  };
+  type();
 }
 
 function finishTyping() {
-  if (typeInterval) clearInterval(typeInterval);
+  if (typeInterval) clearTimeout(typeInterval);
   isTyping = false;
   dialogueText.textContent = currentFullText;
   continuePrompt.style.display = 'flex';
 }
 
+function showEnding() {
+  dialogueBox.style.display = 'none';
+  statusBar.style.display = 'none';
+  stopBGM();
+  confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 }, colors: ['#ffc0cb', '#ffd700', '#ffffff', '#87cefa'] });
+  endChar.src = SPRITE_JUNIOR_WEDDING;
+  endScreen.style.display = 'flex';
+}
+
+function startPetals() {
+  if (petalInterval) return;
+  petalInterval = setInterval(() => {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 100 + 'vw';
+    const size = Math.random() * 10 + 5;
+    petal.style.width = size + 'px';
+    petal.style.height = size + 'px';
+    petal.style.animationDuration = Math.random() * 3 + 2 + 's';
+    petalsContainer.appendChild(petal);
+    setTimeout(() => petal.remove(), 5000);
+  }, 300);
+}
+
+// --- 事件處理 ---
+startBtn.addEventListener('click', () => {
+  startScreen.classList.add('fade-out');
+  setTimeout(() => {
+    startScreen.style.display = 'none';
+    statusBar.style.display = 'flex';
+    dialogueBox.style.display = 'block';
+    gameContainer.style.backgroundImage = `url('${BG_SUNSET}')`;
+    playBGM('town');
+    nextLine();
+  }, 500);
+});
+
 dialogueBox.addEventListener('click', (e) => {
   e.stopPropagation();
-  if (isTyping) {
-    finishTyping();
-  } else {
-    dialogueText.style.opacity = '0';
-    setTimeout(() => {
-      nextLine();
-    }, 200);
-  }
+  if (isTyping) finishTyping();
+  else nextLine();
 });
+
+logBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  logContent.innerHTML = '';
+  dialogueHistory.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'log-item';
+    div.innerHTML = `<div class="log-speaker">${item.speaker}</div><div class="log-text">${item.text}</div>`;
+    logContent.appendChild(div);
+  });
+  logOverlay.style.display = 'flex';
+  logContent.scrollTop = logContent.scrollHeight;
+});
+
+closeLogBtn.addEventListener('click', () => logOverlay.style.display = 'none');
+
+shareBtn.addEventListener('click', async () => {
+  const shareData = { title: '來自學長姊的婚禮祝福', text: '✨ 庭宇 ❤ 禹媗，新婚快樂！點擊觀看這份充滿回憶的 Wedding Quest。', url: window.location.href };
+  try {
+    if (navigator.share) await navigator.share(shareData);
+    else {
+      await navigator.clipboard.writeText(window.location.href);
+      alert('已複製連結到剪貼簿！');
+    }
+  } catch (err) { console.log('Share failed:', err); }
+});
+
+restartBtn.addEventListener('click', () => window.location.reload());
 
 init();
