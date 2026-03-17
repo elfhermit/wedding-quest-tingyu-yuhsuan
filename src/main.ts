@@ -303,10 +303,16 @@ logBtn.addEventListener('click', (e) => {
     logContent.appendChild(div);
   });
   logOverlay.style.display = 'flex';
+  dialogueBox.style.display = 'none';
+  statusBar.style.display = 'none';
   logContent.scrollTop = logContent.scrollHeight;
 });
 
-closeLogBtn.addEventListener('click', () => logOverlay.style.display = 'none');
+closeLogBtn.addEventListener('click', () => {
+  logOverlay.style.display = 'none';
+  dialogueBox.style.display = 'block';
+  statusBar.style.display = 'flex';
+});
 
 shareBtn.addEventListener('click', async () => {
   const shareData = { title: '來自學長姊的婚禮祝福', text: '✨ 庭宇 ❤ 禹媗，新婚快樂！點擊觀看這份充滿回憶的 Wedding Quest。', url: window.location.href };
