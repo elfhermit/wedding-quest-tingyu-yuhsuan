@@ -112,7 +112,12 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 20px;
+  padding: 15px;
+  pointer-events: none; /* Let clicks pass through except for the box */
+}
+
+.dialogue-box {
+  pointer-events: auto; /* Re-enable clicks for the actual box */
 }
 
 .dialogue-box {
@@ -261,16 +266,27 @@ body {
 .memory-bar-bg { flex-grow: 1; height: 10px; background: rgba(0, 0, 0, 0.4); border-radius: 5px; overflow: hidden; }
 .memory-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #ff4757, #ff6b81); transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-.log-btn {
-  background: transparent;
-  border: 1px solid #ffd700;
+.log-btn { display: none !important; }
+
+.dialogue-log-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.4);
   color: #ffd700;
   font-family: var(--font-pixel);
-  font-size: 0.75rem;
-  min-height: 44px;
-  padding: 0 16px;
+  font-size: 0.7rem;
+  padding: 4px 10px;
   cursor: pointer;
   border-radius: 4px;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.dialogue-log-btn:hover {
+  background: #ffd700;
+  color: #0f172a;
 }
 
 .log-btn:hover { background: #ffd700; color: #0f172a; }
@@ -293,8 +309,8 @@ body {
 .log-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(2, 6, 23, 0.85);
-  backdrop-filter: blur(10px);
+  background: rgba(2, 6, 23, 0.98);
+  backdrop-filter: blur(15px);
   z-index: 300;
   display: flex;
   justify-content: center;

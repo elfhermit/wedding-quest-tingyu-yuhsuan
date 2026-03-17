@@ -22,7 +22,7 @@ const propIcon = document.getElementById('prop-icon') as HTMLImageElement;
 const petalsContainer = document.getElementById('petals-container')!;
 const statusBar = document.getElementById('status-bar')!;
 const memoryFill = document.getElementById('memory-fill')!;
-const logBtn = document.getElementById('log-btn')!;
+const logBtn = document.getElementById('dialogue-log-btn')!;
 const logOverlay = document.getElementById('log-overlay')!;
 const logContent = document.getElementById('log-content')!;
 const closeLogBtn = document.getElementById('close-log')!;
@@ -280,7 +280,7 @@ startBtn.addEventListener('click', () => {
   setTimeout(() => {
     startScreen.style.display = 'none';
     statusBar.style.display = 'flex';
-    dialogueBox.style.display = 'block';
+    dialogueBox.style.display = 'flex';
     gameContainer.style.backgroundImage = `url('${BG_SUNSET}')`;
     playBGM('town');
     nextLine();
@@ -310,7 +310,7 @@ logBtn.addEventListener('click', (e) => {
 
 closeLogBtn.addEventListener('click', () => {
   logOverlay.style.display = 'none';
-  dialogueBox.style.display = 'block';
+  dialogueBox.style.display = 'flex';
   statusBar.style.display = 'flex';
 });
 
